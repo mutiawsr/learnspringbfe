@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="https://www.thymeleaf.org" xmlns:layout="http://www.ultreaq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/main}">
+
+<body>
+    <section layout:fragment="container">
+        <div class="container mt-3">
+            <h1 th:text="${title}"></h1>
+
+            <button type="button" class="btn btn-primary mt-1 mb-3" onclick="addForm()">
+                Add Variant Data
+            </button>
+
+            <table class="table table-bordered table-striped table-hover table-sm">
+                <thead>
+                    <tr style="text-align: center;">
+                        <th scope="col">#</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Variant</th>
+                        <th scope="col">Slug</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Is Deleted</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="variantTable">
+
+                </tbody>
+            </table>
+
+            <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="myModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="js/variant.js"></script>
+    </section>
+
+</body>
+
+</html>

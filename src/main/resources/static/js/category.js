@@ -8,7 +8,7 @@ $(document).ready(function () {
             responseData.forEach((category, index) => {
                 $('#categoryTable').append(`
                     <tr>
-                        <td style="text-align: center;">${index + 1}</td>
+                        <th scope="row" style="text-align: center;">${index + 1}</td>
                         <td>${category.name}</td>
                         <td>${category.slug}</td>
                         <td>${category.description}</td>
@@ -84,13 +84,13 @@ function editForm(id) {
         url: `http://localhost:9001/api/category/${id}`,
         contentType: "application/json",
         success: function (response) {
+            $('.modal-title').html("Edit Category");
             let category = response.data;
             $('#categoryName').val(category.name);
             $('#categorySlug').val(category.slug);
             $('#categoryDesc').val(category.description);
             $('#categoryIsDeleted').val(category.isDeleted);
             $('#categoryIsDeleted').prop("checked", category.isDeleted ? true : false);
-            $('.modal-title').html("Edit Category");
             $('#formButton').click(function (e) {
                 editCategory(id);
             });
@@ -138,7 +138,7 @@ function deleteForm(id) {
             $('#categoryIsDeleted').prop("checked", category.isDeleted ? true : false);
             $('#categoryIsDeleted').prop("disabled", true);
             $('.modal-title').html("Delete Category");
-            $('#formButton').click(function (e) {
+            $('#formButton').click(function () {
                 deleteCategory(id);
             });
         }

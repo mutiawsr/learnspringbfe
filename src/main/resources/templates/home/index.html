@@ -4,7 +4,14 @@
 
 <body>
     <section layout:fragment="container">
-        <h1>Welcome</h1>
+        <h1 th:text="${title}" class="mt-3"></h1><br>
+
+        <h4>Navigate To:</h4>
+        <ul style="font-size: larger;">
+            <li><a href="/category">Category</a></li>
+            <li><a href="/product">Product</a></li>
+            <li><a href="#">Variant</a></li>
+        </ul>
     </section>
 </body>
 
