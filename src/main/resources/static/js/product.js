@@ -73,7 +73,8 @@ function loadCategory() {
 function addForm() {
     openForm();
     loadCategory();
-    $(document).on('click', '#formButton', function () {
+    $(document).on('submit', '#productForm', function (e) {
+        e.preventDefault();
         addProduct();
     });
 }
@@ -116,7 +117,8 @@ async function editForm(id) {
     $('#productDesc').val(product.description);
     $('#productIsDeleted').val(product.isDeleted);
     $('#productIsDeleted').prop("checked", product.isDeleted ? true : false);
-    $('#formButton').click(function () {
+    $(document).on('submit', '#productForm', function (e) {
+        e.preventDefault();
         editProduct(id);
     });
 }
@@ -164,7 +166,8 @@ async function deleteForm(id) {
     $('#productDesc').prop("disabled", true);
     $('#productIsDeleted').prop("checked", product.isDeleted ? true : false);
     $('#productIsDeleted').prop("disabled", true);
-    $('#formButton').click(function () {
+    $(document).on('submit', '#productForm', function (e) {
+        e.preventDefault();
         deleteProduct(id);
     });
 }

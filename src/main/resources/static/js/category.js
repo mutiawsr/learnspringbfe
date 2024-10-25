@@ -50,9 +50,32 @@ function openForm() {
 
 function addForm() {
     openForm();
-    $(document).on('click', '#formButton', function () {
+    loadCategory();
+    $(document).on('submit', '#categoryForm', function (e) {
+        e.preventDefault();
         addCategory();
     });
+}
+
+function loadCategory() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "get",
+            url: "http://localhost:9001/api/category/all",
+            contentType: "html",
+            success: function (response) {
+                let categories = response.data;
+                categories.forEach(category => {
+                    $('#productCategory').append(new Option(category.name, category.id));
+                });
+                resolve();
+            },
+            error: function (error) {
+                console.error(error);
+                reject();
+            }
+        });
+    })
 }
 
 function addCategory() {
@@ -77,24 +100,24 @@ function addCategory() {
     });
 }
 
-function editForm(id) {
+async function editForm(id) {
     openForm();
-    $.ajax({
+    let response = await $.ajax({
         type: "get",
         url: `http://localhost:9001/api/category/${id}`,
         contentType: "application/json",
-        success: function (response) {
-            $('.modal-title').html("Edit Category");
-            let category = response.data;
-            $('#categoryName').val(category.name);
-            $('#categorySlug').val(category.slug);
-            $('#categoryDesc').val(category.description);
-            $('#categoryIsDeleted').val(category.isDeleted);
-            $('#categoryIsDeleted').prop("checked", category.isDeleted ? true : false);
-            $('#formButton').click(function (e) {
-                editCategory(id);
-            });
-        }
+    });
+    let category = response.data;
+    $('.modal-title').html("Edit Category");
+    await loadCategory();
+    $('#categoryName').val(category.name);
+    $('#categorySlug').val(category.slug);
+    $('#categoryDesc').val(category.description);
+    $('#categoryIsDeleted').val(category.isDeleted);
+    $('#categoryIsDeleted').prop("checked", category.isDeleted ? true : false);
+    $(document).on('submit', '#categoryForm', function (e) {
+        e.preventDefault();
+        editCategory(id);
     });
 }
 
@@ -120,28 +143,29 @@ function editCategory(id) {
     });
 }
 
-function deleteForm(id) {
+async function deleteForm(id) {
     openForm();
-    $.ajax({
+    let response = await $.ajax({
         type: "get",
         url: `http://localhost:9001/api/category/${id}`,
         contentType: "application/json",
-        success: function (response) {
-            let category = response.data;
-            $('#categoryName').val(category.name);
-            $('#categoryName').prop("disabled", true);
-            $('#categorySlug').val(category.slug);
-            $('#categorySlug').prop("disabled", true);
-            $('#categoryDesc').val(category.description);
-            $('#categoryDesc').prop("disabled", true);
-            $('#categoryIsDeleted').val(category.isDeleted);
-            $('#categoryIsDeleted').prop("checked", category.isDeleted ? true : false);
-            $('#categoryIsDeleted').prop("disabled", true);
-            $('.modal-title').html("Delete Category");
-            $('#formButton').click(function () {
-                deleteCategory(id);
-            });
-        }
+    });
+    let category = response.data;
+    $('.modal-title').html("Delete Category");
+    await loadCategory();
+    $('#categoryName').val(category.name);
+    $('#categoryName').prop("disabled", true);
+    $('#categorySlug').val(category.slug);
+    $('#categorySlug').prop("disabled", true);
+    $('#categoryDesc').val(category.description);
+    $('#categoryDesc').prop("disabled", true);
+    $('#categoryIsDeleted').val(category.isDeleted);
+    $('#categoryIsDeleted').prop("checked", category.isDeleted ? true : false);
+    $('#categoryIsDeleted').prop("disabled", true);
+    $('.modal-title').html("Delete Category");
+    $(document).on('submit', '#categoryForm', function (e) {
+        e.preventDefault();
+        deleteCategory(id);
     });
 }
 

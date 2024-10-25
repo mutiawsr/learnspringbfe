@@ -68,7 +68,9 @@ function loadCategory() {
             contentType: "html",
             success: function (response) {
                 let categories = response.data;
-                $('#variantCategory').empty().append(new Option("Select Category", ""));
+                $('#variantCategory').empty().append(`
+                    <option value="" selected disabled>Select Category</option>
+                `);
                 categories.forEach(category => {
                     $('#variantCategory').append(new Option(category.name, category.id));
                 });
@@ -91,7 +93,9 @@ function loadProduct() {
             contentType: "html",
             success: function (response) {
                 let products = response.data;
-                $('#variantProduct').empty().append(new Option("Select Product", ""));
+                $('#variantProduct').empty().append(`
+                    <option value="" selected disabled>Select Product</option>
+                `);
                 products.forEach(product => {
                     $('#variantProduct').append(new Option(product.name, product.id));
                 });
@@ -107,7 +111,8 @@ function loadProduct() {
 
 function addForm() {
     openForm();
-    $(document).on('click', '#formButton', function () {
+    $(document).on('submit', '#variantForm', function (e) {
+        e.preventDefault();
         addVariant();
     });
 }
@@ -156,7 +161,8 @@ async function editForm(id) {
     $('#variantStock').val(variant.stock);
     $('#variantIsDeleted').val(variant.isDeleted);
     $('#variantIsDeleted').prop("checked", variant.isDeleted ? true : false);
-    $('#formButton').click(function () {
+    $(document).on('submit', '#variantForm', function () {
+        e.preventDefault();
         editVariant(id);
     });
 }
@@ -180,6 +186,7 @@ function editVariant(id) {
             location.reload();
         },
         error: function (error) {
+            alert("Error: Invalid Edit");
             console.error(error);
         }
     });
@@ -213,7 +220,8 @@ async function deleteForm(id) {
     $('#variantIsDeleted').val(variant.isDeleted);
     $('#variantIsDeleted').prop("checked", variant.isDeleted ? true : false);
     $('#variantIsDeleted').prop('disabled', true);
-    $('#formButton').click(function () {
+    $(document).on('submit', '#variantForm', function () {
+        e.preventDefault();
         deleteVariant(id);
     });
 }
