@@ -70,9 +70,9 @@ function loadCategory() {
     })
 }
 
-function addForm() {
+async function addForm() {
     openForm();
-    loadCategory();
+    await loadCategory();
     $(document).on('submit', '#productForm', function (e) {
         e.preventDefault();
         addProduct();
@@ -103,23 +103,25 @@ function addProduct() {
 
 async function editForm(id) {
     openForm();
-    let response = await $.ajax({
+    await $.ajax({
         type: "get",
         url: `http://localhost:9001/api/product/${id}`,
         contentType: "application/json",
-    });
-    let product = response.data;
-    $('.modal-title').html("Edit Product");
-    await loadCategory();
-    $('#productCategory').val(product.category.id);
-    $('#productName').val(product.name);
-    $('#productSlug').val(product.slug);
-    $('#productDesc').val(product.description);
-    $('#productIsDeleted').val(product.isDeleted);
-    $('#productIsDeleted').prop("checked", product.isDeleted ? true : false);
-    $(document).on('submit', '#productForm', function (e) {
-        e.preventDefault();
-        editProduct(id);
+        success: async function (response) {
+            let product = response.data;
+            $('.modal-title').html("Edit Product");
+            await loadCategory();
+            $('#productCategory').val(product.category.id);
+            $('#productName').val(product.name);
+            $('#productSlug').val(product.slug);
+            $('#productDesc').val(product.description);
+            $('#productIsDeleted').val(product.isDeleted);
+            $('#productIsDeleted').prop("checked", product.isDeleted ? true : false);
+            $(document).on('submit', '#productForm', function (e) {
+                e.preventDefault();
+                editProduct(id);
+            });
+        }
     });
 }
 
@@ -147,28 +149,29 @@ function editProduct(id) {
 
 async function deleteForm(id) {
     openForm();
-    let response = await $.ajax({
+    await $.ajax({
         type: "get",
         url: `http://localhost:9001/api/product/${id}`,
         contentType: "application/json",
-    });
-    loadCategory();
-    let product = response.data;
-    $('.modal-title').html("Delete Product");
-    await loadCategory();
-    $('#productCategory').val(product.category.id);
-    $('#productCategory').prop("disabled", true);
-    $('#productName').val(product.name);
-    $('#productName').prop("disabled", true);
-    $('#productSlug').val(product.slug);
-    $('#productSlug').prop("disabled", true);
-    $('#productDesc').val(product.description);
-    $('#productDesc').prop("disabled", true);
-    $('#productIsDeleted').prop("checked", product.isDeleted ? true : false);
-    $('#productIsDeleted').prop("disabled", true);
-    $(document).on('submit', '#productForm', function (e) {
-        e.preventDefault();
-        deleteProduct(id);
+        success: async function (response) {
+            let product = response.data;
+            $('.modal-title').html("Delete Product");
+            await loadCategory();
+            $('#productCategory').val(product.category.id);
+            $('#productCategory').prop("disabled", true);
+            $('#productName').val(product.name);
+            $('#productName').prop("disabled", true);
+            $('#productSlug').val(product.slug);
+            $('#productSlug').prop("disabled", true);
+            $('#productDesc').val(product.description);
+            $('#productDesc').prop("disabled", true);
+            $('#productIsDeleted').prop("checked", product.isDeleted ? true : false);
+            $('#productIsDeleted').prop("disabled", true);
+            $(document).on('submit', '#productForm', function (e) {
+                e.preventDefault();
+                deleteProduct(id);
+            });
+        }
     });
 }
 

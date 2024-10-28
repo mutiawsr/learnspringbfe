@@ -1,0 +1,19 @@
+<form id="paymentForm">
+    <div class="mb-3">
+        <label for="reference">Reference</label>
+        <input readonly type="text" class="form-control" name="reference" id="transactionReference" placeholder="Reference">
+    </div>
+    <div class="mb-3">
+        <label for="bill">Bill</label>
+        <input readonly type="text" class="form-control" name="bill" id="transactionBill" placeholder="Bill">
+    </div>
+    <div class="mb-3">
+        <label for="payment">Payment</label>
+        <input required type="text" class="form-control" name="payment" id="transactionPayment" placeholder="Payment">
+    </div>
+    <div class="mb-3">
+        <label for="change">Change</label>
+        <input readonly type="text" class="form-control" name="change" id="transactionChange" placeholder="Change">
+    </div>
+    <button type="submit" class="btn btn-primary" id="paymentFormButton" style="float: right;">Pay</button>
+</form>

@@ -102,22 +102,24 @@ function addCategory() {
 
 async function editForm(id) {
     openForm();
-    let response = await $.ajax({
+    await $.ajax({
         type: "get",
         url: `http://localhost:9001/api/category/${id}`,
         contentType: "application/json",
-    });
-    let category = response.data;
-    $('.modal-title').html("Edit Category");
-    await loadCategory();
-    $('#categoryName').val(category.name);
-    $('#categorySlug').val(category.slug);
-    $('#categoryDesc').val(category.description);
-    $('#categoryIsDeleted').val(category.isDeleted);
-    $('#categoryIsDeleted').prop("checked", category.isDeleted ? true : false);
-    $(document).on('submit', '#categoryForm', function (e) {
-        e.preventDefault();
-        editCategory(id);
+        success: async function (response) {
+            let category = response.data;
+            $('.modal-title').html("Edit Category");
+            await loadCategory();
+            $('#categoryName').val(category.name);
+            $('#categorySlug').val(category.slug);
+            $('#categoryDesc').val(category.description);
+            $('#categoryIsDeleted').val(category.isDeleted);
+            $('#categoryIsDeleted').prop("checked", category.isDeleted ? true : false);
+            $(document).on('submit', '#categoryForm', function (e) {
+                e.preventDefault();
+                editCategory(id);
+            });
+        }
     });
 }
 
@@ -145,27 +147,29 @@ function editCategory(id) {
 
 async function deleteForm(id) {
     openForm();
-    let response = await $.ajax({
+    await $.ajax({
         type: "get",
         url: `http://localhost:9001/api/category/${id}`,
         contentType: "application/json",
-    });
-    let category = response.data;
-    $('.modal-title').html("Delete Category");
-    await loadCategory();
-    $('#categoryName').val(category.name);
-    $('#categoryName').prop("disabled", true);
-    $('#categorySlug').val(category.slug);
-    $('#categorySlug').prop("disabled", true);
-    $('#categoryDesc').val(category.description);
-    $('#categoryDesc').prop("disabled", true);
-    $('#categoryIsDeleted').val(category.isDeleted);
-    $('#categoryIsDeleted').prop("checked", category.isDeleted ? true : false);
-    $('#categoryIsDeleted').prop("disabled", true);
-    $('.modal-title').html("Delete Category");
-    $(document).on('submit', '#categoryForm', function (e) {
-        e.preventDefault();
-        deleteCategory(id);
+        success: async function (response) {
+            let category = response.data;
+            $('.modal-title').html("Delete Category");
+            await loadCategory();
+            $('#categoryName').val(category.name);
+            $('#categoryName').prop("disabled", true);
+            $('#categorySlug').val(category.slug);
+            $('#categorySlug').prop("disabled", true);
+            $('#categoryDesc').val(category.description);
+            $('#categoryDesc').prop("disabled", true);
+            $('#categoryIsDeleted').val(category.isDeleted);
+            $('#categoryIsDeleted').prop("checked", category.isDeleted ? true : false);
+            $('#categoryIsDeleted').prop("disabled", true);
+            $('.modal-title').html("Delete Category");
+            $(document).on('submit', '#categoryForm', function (e) {
+                e.preventDefault();
+                deleteCategory(id);
+            });
+        }
     });
 }
 

@@ -53,10 +53,10 @@ function openForm() {
     });
 }
 
-function loadData() {
-    loadCategory();
-    $(document).on('change', '#variantCategory', function () {
-        loadProduct();
+async function loadData() {
+    await loadCategory();
+    $(document).on('change', '#variantCategory', async function () {
+        await loadProduct();
     });
 }
 
@@ -143,27 +143,29 @@ function addVariant() {
 
 async function editForm(id) {
     openForm();
-    let response = await $.ajax({
+    await $.ajax({
         type: "get",
         url: `http://localhost:9001/api/variant/${id}`,
-        contentType: "application/json"
-    });
-    let variant = response.data;
-    $('.modal-title').html("Edit Variant");
-    await loadCategory();
-    $('#variantCategory').val(variant.product.category.id);
-    await loadProduct();
-    $('#variantProduct').val(variant.product.id);
-    $('#variantName').val(variant.name);
-    $('#variantSlug').val(variant.slug);
-    $('#variantDesc').val(variant.description);
-    $('#variantPrice').val(variant.price);
-    $('#variantStock').val(variant.stock);
-    $('#variantIsDeleted').val(variant.isDeleted);
-    $('#variantIsDeleted').prop("checked", variant.isDeleted ? true : false);
-    $(document).on('submit', '#variantForm', function () {
-        e.preventDefault();
-        editVariant(id);
+        contentType: "application/json",
+        success: async function (response) {
+            let variant = response.data;
+            $('.modal-title').html("Edit Variant");
+            await loadCategory();
+            $('#variantCategory').val(variant.product.category.id);
+            await loadProduct();
+            $('#variantProduct').val(variant.product.id);
+            $('#variantName').val(variant.name);
+            $('#variantSlug').val(variant.slug);
+            $('#variantDesc').val(variant.description);
+            $('#variantPrice').val(variant.price);
+            $('#variantStock').val(variant.stock);
+            $('#variantIsDeleted').val(variant.isDeleted);
+            $('#variantIsDeleted').prop("checked", variant.isDeleted ? true : false);
+            $(document).on('submit', '#variantForm', function () {
+                e.preventDefault();
+                editVariant(id);
+            });
+        }
     });
 }
 
@@ -194,35 +196,37 @@ function editVariant(id) {
 
 async function deleteForm(id) {
     openForm();
-    let response = await $.ajax({
+    await $.ajax({
         type: "get",
         url: `http://localhost:9001/api/variant/${id}`,
-        contentType: "application/json"
-    });
-    let variant = response.data;
-    $('.modal-title').html("Delete Variant");
-    await loadCategory();
-    $('#variantCategory').val(variant.product.category.id);
-    $('#variantCategory').prop('disabled', true);
-    await loadProduct();
-    $('#variantProduct').val(variant.product.id);
-    $('#variantProduct').prop('disabled', true);
-    $('#variantName').val(variant.name);
-    $('#variantName').prop('disabled', true);
-    $('#variantSlug').val(variant.slug);
-    $('#variantSlug').prop('disabled', true);
-    $('#variantDesc').val(variant.description);
-    $('#variantDesc').prop('disabled', true);
-    $('#variantPrice').val(variant.price);
-    $('#variantPrice').prop('disabled', true);
-    $('#variantStock').val(variant.stock);
-    $('#variantStock').prop('disabled', true);
-    $('#variantIsDeleted').val(variant.isDeleted);
-    $('#variantIsDeleted').prop("checked", variant.isDeleted ? true : false);
-    $('#variantIsDeleted').prop('disabled', true);
-    $(document).on('submit', '#variantForm', function () {
-        e.preventDefault();
-        deleteVariant(id);
+        contentType: "application/json",
+        success: async function (response) {
+            let variant = response.data;
+            $('.modal-title').html("Delete Variant");
+            await loadCategory();
+            $('#variantCategory').val(variant.product.category.id);
+            $('#variantCategory').prop('disabled', true);
+            await loadProduct();
+            $('#variantProduct').val(variant.product.id);
+            $('#variantProduct').prop('disabled', true);
+            $('#variantName').val(variant.name);
+            $('#variantName').prop('disabled', true);
+            $('#variantSlug').val(variant.slug);
+            $('#variantSlug').prop('disabled', true);
+            $('#variantDesc').val(variant.description);
+            $('#variantDesc').prop('disabled', true);
+            $('#variantPrice').val(variant.price);
+            $('#variantPrice').prop('disabled', true);
+            $('#variantStock').val(variant.stock);
+            $('#variantStock').prop('disabled', true);
+            $('#variantIsDeleted').val(variant.isDeleted);
+            $('#variantIsDeleted').prop("checked", variant.isDeleted ? true : false);
+            $('#variantIsDeleted').prop('disabled', true);
+            $(document).on('submit', '#variantForm', function () {
+                e.preventDefault();
+                deleteVariant(id);
+            });
+        }
     });
 }
 
